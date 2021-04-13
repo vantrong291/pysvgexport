@@ -1,1 +1,1 @@
-from svg_export import SVGExport
+from .svg_export import SVGExport
