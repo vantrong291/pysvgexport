@@ -15,7 +15,11 @@ empty_page = os.environ.get("EMPTY_PAGE_URL", "about:blank")
 class SVGExport:
     def __init__(self, svg_data, capture_options, output_options):
         self.svg_data = svg_data
-        self.capture_options = capture_options
+        self.capture_options = {
+            "left": 0,
+            "top": 0,
+            **capture_options
+        }
         self.output_options = output_options
 
     def execute(self):

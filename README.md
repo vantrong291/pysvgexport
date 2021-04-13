@@ -28,11 +28,7 @@ svg_data = '''
             </text>
         </svg>
 '''
-capture_options = {
-      "top": 0,
-      "left": 0,
-      "scale": 20
-    }
+capture_options = {"scale": 20}
 output_options = {"omitBackground": True}
 oqs = SVGExport(svg_data=svg_data, capture_options=capture_options, output_options=output_options)
 image = oqs.execute()
