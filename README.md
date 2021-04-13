@@ -7,7 +7,7 @@ pip install pysvgexport
 ```
 ### Usage
 ```python
-from pysvgexport.svg_export import SVGExport
+from pysvgexport import SVGExport
 svg_data = '''
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xhtml" width="235.6875px"
             height="112.37257096319047px" viewBox="0 0 235.6875 112.37257096319047">
