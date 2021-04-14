@@ -1,7 +1,6 @@
 import asyncio
 import io
 import os
-import time
 
 from PIL import Image
 from pyppeteer import launch
@@ -18,6 +17,7 @@ class SVGExport:
         self.capture_options = {
             "left": 0,
             "top": 0,
+            "timeout": 1000,
             **capture_options
         }
         self.output_options = output_options
@@ -77,7 +77,8 @@ class SVGExport:
         await page.evaluate(transform_output_element, input_props, self.capture_options, clip)
 
         output_element = await page.querySelector('#output_frame_29010701')
-        time.sleep(0.5)
+        await page.waitFor(self.capture_options['timeout'])
+
         image_data = await output_element.screenshot(self.output_options)
         result_image = Image.open(io.BytesIO(image_data))
         await browser.close()
