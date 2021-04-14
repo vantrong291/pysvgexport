@@ -77,7 +77,14 @@ class SVGExport:
         await page.evaluate(transform_output_element, input_props, self.capture_options, clip)
 
         output_element = await page.querySelector('#output_frame_29010701')
+
         await page.waitFor(self.capture_options['timeout'])
+        # await page.waitForFunction('''
+        #     async (url) => {
+        #         let blob = await fetch(url).then(r => r.blob());
+        #         return blob
+        #     }
+        # ''', {"polling": "raf"}, str(self.capture_options['wait_url']))
 
         image_data = await output_element.screenshot(self.output_options)
         result_image = Image.open(io.BytesIO(image_data))
