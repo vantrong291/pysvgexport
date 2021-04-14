@@ -5,7 +5,7 @@ import os
 from PIL import Image
 from pyppeteer import launch
 
-from pysvgexport.js_function import retrieve_input_props, transform_svg_element, transform_output_element
+from .js_function import retrieve_input_props, transform_svg_element, transform_output_element
 
 chromium = os.environ.get("CHROMIUM_EXECUTABLE_PATH")
 empty_page = os.environ.get("EMPTY_PAGE_URL", "about:blank")
@@ -17,7 +17,6 @@ class SVGExport:
         self.capture_options = {
             "left": 0,
             "top": 0,
-            "timeout": 1000,
             **capture_options
         }
         self.output_options = output_options
@@ -76,15 +75,14 @@ class SVGExport:
 
         await page.evaluate(transform_output_element, input_props, self.capture_options, clip)
 
-        output_element = await page.querySelector('#output_frame_29010701')
+        await page.waitForFunction('''
+            async (url) => {
+                let blob = await fetch(url).then(r => r.blob());
+                return blob
+            }
+        ''', {"polling": "raf"}, str(self.capture_options['wait_url']))
 
-        await page.waitFor(self.capture_options['timeout'])
-        # await page.waitForFunction('''
-        #     async (url) => {
-        #         let blob = await fetch(url).then(r => r.blob());
-        #         return blob
-        #     }
-        # ''', {"polling": "raf"}, str(self.capture_options['wait_url']))
+        output_element = await page.querySelector('#output_frame_29010701')
 
         image_data = await output_element.screenshot(self.output_options)
         result_image = Image.open(io.BytesIO(image_data))
