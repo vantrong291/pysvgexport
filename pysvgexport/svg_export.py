@@ -12,14 +12,16 @@ empty_page = os.environ.get("EMPTY_PAGE_URL", "about:blank")
 
 
 class SVGExport:
-    def __init__(self, svg_data, capture_options, output_options):
+    def __init__(self, svg_data, capture_options, output_options, js_log=False):
         self.svg_data = svg_data
         self.capture_options = {
             "left": 0,
             "top": 0,
+            "timeout": 1000,
             **capture_options
         }
         self.output_options = output_options
+        self.js_log = js_log
 
     def execute(self):
         return asyncio.get_event_loop().run_until_complete(self.render_svg())
@@ -27,6 +29,7 @@ class SVGExport:
     async def render_svg(self):
         browser_options = {
             'headless': True,
+            'dumpio': self.js_log,
             'args': ['--no-sandbox', '--font-render-hinting=none']
         }
         if os.environ.get("CHROMIUM_EXECUTABLE_PATH"):
