@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='pysvgexport',
-    version='1.0.4',
+    version='1.0.5',
     scripts=[],
     author="vantrong291",
     author_email="vantrong291@gmail.com",
