@@ -75,3 +75,13 @@ transform_output_element = '''
         svg.style.setProperty('height', input.height * output.scale + 'px', 'important');
     }
 '''
+
+wait_function = '''
+    (urls) => {
+        return JSON.parse(urls).map(async (url) => {
+            let blob = await fetch(url).then(r => r.blob());
+            console.log(blob);
+            return blob
+        })
+    }
+'''

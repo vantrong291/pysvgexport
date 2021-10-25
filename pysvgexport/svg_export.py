@@ -1,11 +1,12 @@
 import asyncio
 import io
+import json
 import os
 
 from PIL import Image
 from pyppeteer import launch
 
-from .js_function import retrieve_input_props, transform_svg_element, transform_output_element
+from .js_function import retrieve_input_props, transform_svg_element, transform_output_element, wait_function
 
 chromium = os.environ.get("CHROMIUM_EXECUTABLE_PATH")
 empty_page = os.environ.get("EMPTY_PAGE_URL", "about:blank")
@@ -43,6 +44,7 @@ class SVGExport:
             <html>
             <head>
                 <title>svg</title>
+                <meta http-equiv="Content-Security-Policy" content="">
             </head>
             <body style="
                     margin: 0 !important;
@@ -78,12 +80,19 @@ class SVGExport:
 
         await page.evaluate(transform_output_element, input_props, self.capture_options, clip)
 
-        await page.waitForFunction('''
-            async (url) => {
-                let blob = await fetch(url).then(r => r.blob());
-                return blob
-            }
-        ''', {"polling": "raf"}, str(self.capture_options['wait_url']))
+        # await page.waitFor(10000)
+
+        if self.capture_options['static_url_list']:
+            static_file_urls = json.dumps(self.capture_options['static_url_list'])
+            await page.waitForFunction(wait_function, {"polling": "raf"}, static_file_urls)
+
+        # static_file_urls = str(self.capture_options['static_url_list'])
+        # await page.waitForFunction('''
+        #     async (url) => {
+        #         let blob = await fetch(url).then(r => r.blob());
+        #         return blob
+        #     }
+        # ''', {"polling": "raf"}, str(self.capture_options['static_url_list']))
 
         output_element = await page.querySelector('#output_frame_29010701')
 
