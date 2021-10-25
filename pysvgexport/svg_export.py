@@ -82,17 +82,9 @@ class SVGExport:
 
         # await page.waitFor(10000)
 
-        if self.capture_options['static_url_list']:
+        if bool(self.capture_options['static_url_list']):
             static_file_urls = json.dumps(self.capture_options['static_url_list'])
             await page.waitForFunction(wait_function, {"polling": "raf"}, static_file_urls)
-
-        # static_file_urls = str(self.capture_options['static_url_list'])
-        # await page.waitForFunction('''
-        #     async (url) => {
-        #         let blob = await fetch(url).then(r => r.blob());
-        #         return blob
-        #     }
-        # ''', {"polling": "raf"}, str(self.capture_options['static_url_list']))
 
         output_element = await page.querySelector('#output_frame_29010701')
 
