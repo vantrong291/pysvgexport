@@ -1,5 +1,9 @@
 # PySVGExport
 
+![Python Version Support](https://img.shields.io/badge/python-3.6+-blue)
+![PyPI Version](https://img.shields.io/pypi/v/pysvgexport?label=PyPI&logo=pypi)
+[![GitHub license](https://img.shields.io/github/license/vantrong291/pysvgexport)](https://github.com/vantrong291/pysvgexport/blob/main/LICENSE)
+
 ## _SVGExport for Python_
 
 Idea from [svgexport] using for nodejs
