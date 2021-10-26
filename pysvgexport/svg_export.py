@@ -92,3 +92,4 @@ class SVGExport:
         result_image = Image.open(io.BytesIO(image_data))
         await browser.close()
         return result_image
+

@@ -24,4 +24,7 @@ setuptools.setup(
         'pyppeteer', 'Pillow'
     ],
     include_package_data=True,
+    entry_points={
+        "console_scripts": ['svgexport = pysvgexport.script:main']
+    }
 )
